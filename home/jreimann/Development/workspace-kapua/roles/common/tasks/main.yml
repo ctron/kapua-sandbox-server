@@ -1,0 +1,10 @@
+---
+# Common playbook run on all nodes
+
+- name: Install docker
+  yum: name=docker state=present
+  become: true
+
+- name: Enable docker
+  systemd: enabled=yes state=started name=docker
+  become: true
