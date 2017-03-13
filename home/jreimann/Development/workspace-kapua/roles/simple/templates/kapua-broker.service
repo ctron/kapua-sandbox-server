@@ -1,0 +1,12 @@
+[Unit]
+Description=Kapua broker container
+Requires=kapua-sql.service
+After=kapua-sql.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a kapua-broker
+ExecStop=/usr/bin/docker stop -t 2 kapua-broker
+
+[Install]
+WantedBy=default.target

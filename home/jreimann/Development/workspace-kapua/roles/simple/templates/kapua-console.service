@@ -1,0 +1,12 @@
+[Unit]
+Description=Kapua console container
+Requires=kapua-broker.service
+After=kapua-broker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a kapua-console
+ExecStop=/usr/bin/docker stop -t 2 kapua-console
+
+[Install]
+WantedBy=default.target

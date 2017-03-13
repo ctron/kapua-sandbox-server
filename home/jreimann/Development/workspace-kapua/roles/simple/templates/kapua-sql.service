@@ -1,0 +1,12 @@
+[Unit]
+Description=Kapua SQL container
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/docker start -a kapua-sql
+ExecStop=/usr/bin/docker stop -t 2 kapua-sql
+
+[Install]
+WantedBy=default.target

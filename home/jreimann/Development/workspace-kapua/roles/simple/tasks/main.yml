@@ -18,6 +18,7 @@
     persistent: yes
 
 - name: Re-create the SQL container
+  tags: app
   docker_container:
     name: kapua-sql
     image: kapua/kapua-sql
@@ -27,6 +28,7 @@
       - 3306
 
 - name: Re-create the broker container
+  tags: app
   docker_container:
     name: kapua-broker
     image: kapua/kapua-broker
@@ -38,6 +40,7 @@
      - "kapua-sql:db"
 
 - name: Re-create the console container
+  tags: app
   docker_container:
     name: kapua-console
     image: kapua/kapua-console-jetty
@@ -48,3 +51,42 @@
     links:
      - "kapua-sql:db"
      - "kapua-broker"
+
+- name: Add systemd kapua-sql
+  tags: systemd
+  template: src=kapua-sql.service dest=/etc/systemd/system/kapua-sql.service
+
+- name: Add systemd kapua-broker
+  tags: systemd
+  template: src=kapua-broker.service dest=/etc/systemd/system/kapua-broker.service
+
+- name: Add systemd kapua-console
+  tags: systemd
+  template: src=kapua-console.service dest=/etc/systemd/system/kapua-console.service
+
+- name: Activate systemd kapua-sql
+  tags: systemd
+  systemd:
+    name: kapua-sql
+    daemon_reload: yes
+    state: started
+    enabled: yes
+    masked: no
+
+- name: Activate systemd kapua-broker
+  tags: systemd
+  systemd:
+    name: kapua-broker
+    daemon_reload: yes
+    state: started
+    enabled: yes
+    masked: no
+
+- name: Activate systemd kapua-console
+  tags: systemd
+  systemd:
+    name: kapua-console
+    daemon_reload: yes
+    state: started
+    enabled: yes
+    masked: no
