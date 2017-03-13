@@ -23,6 +23,7 @@
     name: kapua-sql
     image: kapua/kapua-sql
     state: started
+    pull: yes
     recreate: yes
     published_ports:
       - 3306
@@ -33,6 +34,7 @@
     name: kapua-broker
     image: kapua/kapua-broker
     state: started
+    pull: yes
     recreate: yes
     published_ports:
       - 1883
@@ -45,6 +47,7 @@
     name: kapua-console
     image: kapua/kapua-console-jetty
     state: started
+    pull: yes
     recreate: yes
     published_ports:
       - 8080:8080
