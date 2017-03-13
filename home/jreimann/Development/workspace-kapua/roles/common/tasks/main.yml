@@ -3,8 +3,9 @@
 
 - name: Install docker
   yum: name=docker state=present
-  become: true
+
+- name: Install python-docker-py
+  yum: name=python-docker-py state=present
 
 - name: Enable docker
   systemd: enabled=yes state=started name=docker
-  become: true

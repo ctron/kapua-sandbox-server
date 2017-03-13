@@ -1,0 +1,17 @@
+---
+# Playbook for most of the Let's encrypt stuff
+# Thank you Let's encrypt, you rock!
+
+- name: Install certbot
+  tags: certbot
+  yum: name=python-certbot-apache state=present
+
+# You must use certbot locally to request the certificate for the first time
+
+- name: Create certbot renew cron job
+  tags: certbot
+  cron:
+    name: "Renew letsencrypt"
+    minute: "37"
+    hour: "2,14"
+    job: "certbot renew --quiet --renew-hook 'systemctrl restart httpd'"

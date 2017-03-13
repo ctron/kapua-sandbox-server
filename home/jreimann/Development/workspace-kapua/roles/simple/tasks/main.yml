@@ -1,0 +1,50 @@
+---
+# Simple docker based Kapua setup
+
+- name: Install httpd
+  tags: httpd
+  yum: name=httpd state=present
+
+- name: Configure httpd
+  template: src=kapua-vhost.conf dest=/etc/httpd/conf.d/kapua-vhost.conf
+  tags: httpd
+  notify: restart httpd
+
+- name: allow apache to connect
+  tags: httpd
+  seboolean:
+    name: httpd_can_network_connect  
+    state: yes
+    persistent: yes
+
+- name: Re-create the SQL container
+  docker_container:
+    name: kapua-sql
+    image: kapua/kapua-sql
+    state: started
+    recreate: yes
+    published_ports:
+      - 3306
+
+- name: Re-create the broker container
+  docker_container:
+    name: kapua-broker
+    image: kapua/kapua-broker
+    state: started
+    recreate: yes
+    published_ports:
+      - 1883
+    links:
+     - "kapua-sql:db"
+
+- name: Re-create the console container
+  docker_container:
+    name: kapua-console
+    image: kapua/kapua-console-jetty
+    state: started
+    recreate: yes
+    published_ports:
+      - 8080:8080
+    links:
+     - "kapua-sql:db"
+     - "kapua-broker"

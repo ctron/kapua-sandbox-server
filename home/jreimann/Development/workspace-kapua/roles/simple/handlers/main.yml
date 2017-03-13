@@ -1,0 +1,5 @@
+---
+# Handlers for the simple setup
+
+- name: restart httpd
+  service: name=httpd state=restarted
