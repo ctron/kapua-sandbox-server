@@ -39,7 +39,7 @@
     published_ports:
       - 1883
     links:
-     - "kapua-sql:db"
+      - "kapua-sql:db"
 
 - name: Re-create the console container
   tags: app
@@ -52,8 +52,10 @@
     published_ports:
       - 8080:8080
     links:
-     - "kapua-sql:db"
-     - "kapua-broker"
+      - "kapua-sql:db"
+      - "kapua-broker"
+    env:
+      login.generic.snippet: '<a href="https://wiki.eclipse.org/Kapua/SandboxServer" target="_blank">About this Instance</a> – <a href="https://eclipse.org/legal/termsofuse.php" target="_blank">Terms of Use</a> – <a href="https://eclipse.org/legal/" target="_blank">Legal Resources</a>'
 
 - name: Add systemd kapua-sql
   tags: systemd
